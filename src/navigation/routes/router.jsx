@@ -4,6 +4,7 @@ import HomeScreen from "../../pages/home/HomeScreen";
 import PageNotFound from "../../pages/PageNotFound";
 import ChannelScreen from "../../pages/channel/ChannelScreen";
 import ProtectedRoute from "./ProtectedRoute";
+import VideoScreen from "../../pages/video/VideoScreen";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      { path: "/video/:id", element: <VideoScreen /> },
       { path: "*", element: <PageNotFound /> },
     ],
   },
