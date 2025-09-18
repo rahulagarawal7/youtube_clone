@@ -1,9 +1,10 @@
 import React from "react";
 
-const Loader = () => {
+const Loader = ({ isVisible = false }) => {
+  if (!isVisible) return null;
   return (
-    <div className="flex items-center justify-center w-full h-[60vh]">
-      <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
+      <div className="w-14 h-14 border-4 border-blue-500 border-t-transparent rounded-full animate-spin shadow-lg" />
     </div>
   );
 };

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { signinUserThunk } from "../store/slices/authSlice";
 import { Eye, EyeOff } from "lucide-react";
+import { registerThunk } from "../store/slices/authSlice";
+import Loader from "./Loader";
+import PopupModal from "./PopupModal";
 
 const LoginModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
@@ -11,6 +14,14 @@ const LoginModal = ({ isOpen, onClose }) => {
   });
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showPopup, setShowPopup] = useState({
+    show: false,
+    message: "",
+    title: "",
+  });
+
+  const { loading } = useSelector((store) => store.auth?.register);
+  const { loginLoading } = useSelector((store) => store.auth?.loggedIn);
 
   const dispatch = useDispatch();
 
@@ -20,16 +31,27 @@ const LoginModal = ({ isOpen, onClose }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignup) {
-      console.log("Signup Data:", formData);
-      dispatch(loginUser());
-      onClose();
+      const res = await dispatch(registerThunk(formData)).unwrap(); // unwrap gets the payload
+      if (res.success) {
+        setShowPopup({
+          show: true,
+          message: res?.message || "✅ Registered Successfully!",
+          title: "Success",
+        });
+        setIsSignup(false);
+      }
+
+      // onClose();
     } else {
       console.log("Login Data:", formData);
-      dispatch(loginUser());
-      onClose();
+
+      const result = await dispatch(signinUserThunk(formData)).unwrap();
+      if (result?.success) {
+        onClose();
+      }
     }
   };
 
@@ -158,6 +180,13 @@ const LoginModal = ({ isOpen, onClose }) => {
             </button>
           </p>
         </div>
+        <Loader isVisible={loading || loginLoading} />
+        <PopupModal
+          title={showPopup.title}
+          message={showPopup.message}
+          isVisible={showPopup.show}
+          onClose={() => setShowPopup({ show: false, message: "", title: "" })}
+        />
       </div>
     </div>
   );

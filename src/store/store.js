@@ -1,7 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage"; // localStorage
-import { rootReducer } from "./rootReducer";
+import rootReducer from "./rootReducer";
 
 // Persist config: persist only auth slice
 const persistConfig = {
@@ -16,6 +25,13 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Create store
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore redux-persist actions (they contain non-serializable functions)
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 // Create persistor
