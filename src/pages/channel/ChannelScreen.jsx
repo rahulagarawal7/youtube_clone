@@ -13,13 +13,13 @@ import ChannelVideos from "./components/ChannelVideos";
 const ChannelScreen = () => {
   const { channelId } = useParams();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const { hasChannel } = useSelector((store) => store?.auth);
+  const { userInfo } = useSelector((store) => store?.auth?.loggedIn);
 
   const handleUploadVideo = (videoData) => {
     console.log("Uploaded:", videoData);
   };
 
-  if (!hasChannel) return <NoChannel />;
+  if (!userInfo?.hasChannel) return <NoChannel />;
 
   // Dummy channel data (replace with API/Redux later)
   const channel = {

@@ -1,10 +1,14 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import sidebarReducer from "./slices/sidebarSlice";
-import authSlice from "./slices/authSlice";
-import loginModalSlice from "./slices/loginModalSlice";
+import authReducer from "./slices/authSlice";
+import loginModalReducer from "./slices/loginModalSlice";
+import alertReducer from "./slices/alertSlice";
 
-export const rootReducer = combineReducers({
+const rootReducer = combineReducers({
   sidebar: sidebarReducer,
-  auth: authSlice,
-  loginModal: loginModalSlice,
+  auth: authReducer,
+  loginModal: loginModalReducer,
+  alert: alertReducer,
 });
+
+export default rootReducer;

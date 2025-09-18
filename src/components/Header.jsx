@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Menu, Search, Mic, Video, Bell, User, ArrowLeft } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { openSidebar } from "../store/slices/sidebarSlice";
-import { loginUser } from "../store/slices/authSlice";
+import { closeSidebar, openSidebar } from "../store/slices/sidebarSlice";
 import LogoutModal from "./LogoutModal";
 import { useNavigate } from "react-router-dom";
 import { openLoginModal } from "../store/slices/loginModalSlice";
@@ -13,31 +12,30 @@ const Header = ({}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
-  const { isLoggedIn, hasChannel } = useSelector((store) => store?.auth);
+  const { isLoggedIn, userInfo } = useSelector(
+    (store) => store?.auth?.loggedIn
+  );
+
+  console.log("userinfo--->", userInfo);
 
   const dispatch = useDispatch();
-
-  // const isToken = localStorage.getItem("isLoggedIn");
-
-  // useEffect(() => {
-  //   if (isToken) {
-  //     dispatch(loginUser());
-  //   }
-  // }, []);
 
   const handleLogin = () => {
     dispatch(openLoginModal());
   };
 
   const handleLogout = () => {
+    dispatch(closeSidebar());
     setShowLogout(true);
   };
 
   const handleViewChannel = () => {
+    dispatch(closeSidebar());
     navigate("/channel");
   };
 
   const handleCreateChannel = () => {
+    dispatch(closeSidebar());
     navigate("/channel");
   };
 
@@ -154,7 +152,7 @@ const Header = ({}) => {
                 <span className="lg:inline">Sign in</span>
               </button>
               <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border border-gray-200">
-                <User className="w-4 h-4" rounded-2xl />
+                <User className="w-4 h-4 rounded-2xl" />
               </div>
             </div>
           ) : (
@@ -166,7 +164,7 @@ const Header = ({}) => {
                 Logout
               </button>
 
-              {!hasChannel && isLoggedIn ? (
+              {!userInfo?.hasChannel && isLoggedIn ? (
                 <button
                   onClick={handleCreateChannel}
                   className="px-2 lg:px-3 py-1.5 rounded-2xl text-xs lg:text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 transition-colors whitespace-nowrap"
@@ -236,7 +234,7 @@ const Header = ({}) => {
                   </button>
                 ) : (
                   <>
-                    {!hasChannel && isLoggedIn ? (
+                    {!userInfo?.hasChannel && isLoggedIn ? (
                       <button
                         onClick={() => handleDropdownClick(handleCreateChannel)}
                         className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"

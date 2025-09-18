@@ -25,7 +25,7 @@ const VideoScreen = () => {
   };
 
   return (
-    <div className=" mx-auto px-4 py-6 flex flex-col xl:flex-row gap-6">
+    <div className="mx-auto px-4 py-6 flex flex-col xl:flex-row gap-6">
       <div className="flex-1 max-w-4xl">
         <VideoPlayer thumbnailUrl={video.thumbnailUrl} title={video.title} />
         <h1 className="text-xl md:text-2xl font-bold mb-2">{video.title}</h1>

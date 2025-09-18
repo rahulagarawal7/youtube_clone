@@ -10,12 +10,17 @@ const SuggestedVideos = ({ videos, currentId, formatNumber, formatDate }) => {
           .filter((v) => v.videoId !== currentId)
           .slice(0, 10)
           .map((v) => (
-            <SuggestedVideoCard
-              key={v.videoId}
-              video={v}
-              formatNumber={formatNumber}
-              formatDate={formatDate}
-            />
+            <div
+              key={v?.videoId}
+              className="transform hover:scale-105 transition-transform duration-200 ease-in-out"
+            >
+              <SuggestedVideoCard
+                key={v.videoId}
+                video={v}
+                formatNumber={formatNumber}
+                formatDate={formatDate}
+              />
+            </div>
           ))}
       </div>
     </div>

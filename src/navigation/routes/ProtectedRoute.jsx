@@ -7,15 +7,16 @@ const ProtectedRoute = ({ children }) => {
   const dispatch = useDispatch();
 
   // const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const isLoggedIn = useSelector((store) => store?.auth.isLoggedIn);
+  const { isLoggedIn } = useSelector((store) => store?.auth.loggedIn);
+  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || token === null) {
       dispatch(openLoginModal());
     }
   }, [isLoggedIn, dispatch]);
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn || token === null) {
     return <Navigate to="/" replace />;
   } else {
     return children;

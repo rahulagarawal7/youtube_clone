@@ -6,7 +6,7 @@ const CommentItem = ({ comment }) => {
       <img
         src={comment.avatar}
         alt={comment.author}
-        className="w-10 h-10 rounded-full"
+        className="w-12 h-12 rounded-full"
       />
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-1">

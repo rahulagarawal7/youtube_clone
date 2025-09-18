@@ -4,15 +4,23 @@ const ChannelInfo = ({ uploader, description }) => {
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl mb-4">
+    <div className="flex items-start justify-between gap-3 p-2 bg-gray-50 rounded-xl mb-4">
       <img
         src={`https://ui-avatars.com/api/?name=${uploader}&background=FF0000&color=fff&size=48`}
         alt={uploader}
         className="w-12 h-12 rounded-full"
       />
       <div className="flex-1">
-        <h3 className="font-semibold text-gray-900">{uploader}</h3>
-        <p className="text-sm text-gray-600 mb-2">120K subscribers</p>
+        <div className="flex flex-row justify-between mb-4">
+          <div className="">
+            <h3 className="font-semibold text-gray-900">{uploader}</h3>
+            <p className="text-sm text-gray-600 mb-2">120K subscribers</p>
+          </div>
+          <button className="bg-red-600  text-white px-4 py-2 rounded-full font-medium hover:bg-red-700 transition-colors">
+            Subscribe
+          </button>
+        </div>
+
         <p
           className={`text-sm text-gray-800 ${!showMore ? "line-clamp-2" : ""}`}
         >
@@ -27,9 +35,6 @@ const ChannelInfo = ({ uploader, description }) => {
           </button>
         )}
       </div>
-      <button className="bg-red-600 text-white px-6 py-2 rounded-full font-medium hover:bg-red-700 transition-colors">
-        Subscribe
-      </button>
     </div>
   );
 };

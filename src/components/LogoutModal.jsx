@@ -1,13 +1,19 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../store/slices/authSlice";
+import { logoutUserThunk } from "../store/slices/authSlice";
+import { showAlert } from "../store/slices/alertSlice";
 
 const LogoutModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   if (!isOpen) return null;
 
-  const handleOnLogout = () => {
-    dispatch(logoutUser());
+  const handleOnLogout = async () => {
+    const res = await dispatch(logoutUserThunk()).unwrap();
+    if (res?.success) {
+      dispatch(
+        showAlert({ title: "Alert!", message: res?.message, status: 200 })
+      );
+    }
     onClose();
   };
 
