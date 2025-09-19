@@ -16,8 +16,6 @@ const Header = ({}) => {
     (store) => store?.auth?.loggedIn
   );
 
-  console.log("userinfo--->", userInfo);
-
   const dispatch = useDispatch();
 
   const handleLogin = () => {

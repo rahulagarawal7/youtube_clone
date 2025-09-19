@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { resisterUser, signinUser, logoutUser } from "../../services/api";
+import {
+  resisterUser,
+  signinUser,
+  logoutUser,
+  getUser,
+} from "../../services/api";
 
 // Async thunk → Register
 export const registerThunk = createAsyncThunk(
@@ -19,6 +24,18 @@ export const signinUserThunk = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await signinUser(userData);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data);
+    }
+  }
+);
+
+export const getUserThunk = createAsyncThunk(
+  "auth/getUser",
+  async (_, thunkAPI) => {
+    try {
+      const response = await getUser();
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data);
@@ -99,6 +116,18 @@ const authSlice = createSlice({
         localStorage.removeItem("authToken");
       })
       .addCase(logoutUserThunk.rejected, (state) => {
+        state.loggedIn.loginLoading = false;
+      });
+    builder
+      .addCase(getUserThunk.pending, (state) => {
+        state.loggedIn.loginLoading = true;
+      })
+      .addCase(getUserThunk.fulfilled, (state, { payload }) => {
+        state.loggedIn.loginLoading = false;
+        state.loggedIn.isLoggedIn = true;
+        state.loggedIn.userInfo = payload?.user;
+      })
+      .addCase(getUserThunk.rejected, (state) => {
         state.loggedIn.loginLoading = false;
       });
   },

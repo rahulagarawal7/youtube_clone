@@ -1,6 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createChannelThunk,
+  updateChannelThunk,
+} from "../../../store/slices/channelSlice";
+import Loader from "../../../components/Loader";
+import { getUserThunk } from "../../../store/slices/authSlice";
+import { showAlert } from "../../../store/slices/alertSlice";
 
-const CreateChannelModal = ({ isOpen, onClose, onCreate }) => {
+const ChannelModal = ({
+  isOpen,
+  onClose,
+  isCreate = true,
+  channelData = {},
+}) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -8,23 +21,66 @@ const CreateChannelModal = ({ isOpen, onClose, onCreate }) => {
     banner: "",
   });
 
-  if (!isOpen) return null; // don’t render if modal is closed
+  const dispatch = useDispatch();
+  const { loading } = useSelector((store) => store.channel);
+
+  // Prefill form data if update mode
+  useEffect(() => {
+    if (!isCreate && channelData) {
+      setFormData({
+        name: channelData.name || "",
+        description: channelData.description || "",
+        avatar: channelData.avatar || "",
+        banner: channelData.banner || "",
+      });
+    }
+  }, [isCreate, channelData]);
+
+  if (!isOpen) return null;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name.trim()) return alert("Channel name is required!");
-    onCreate(formData);
-    onClose();
+
+    if (!formData.name.trim()) {
+      return alert("Channel name is required!");
+    }
+
+    try {
+      let result;
+      if (isCreate) {
+        result = await dispatch(createChannelThunk(formData)).unwrap();
+      } else {
+        result = await dispatch(
+          updateChannelThunk({ id: channelData._id, data: formData })
+        ).unwrap();
+      }
+
+      if (result.success) {
+        dispatch(getUserThunk());
+        dispatch(
+          showAlert({
+            title: "Success",
+            message: result.message,
+            status: 200,
+          })
+        );
+        onClose();
+      }
+    } catch (err) {
+      console.error("Channel error:", err);
+    }
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white w-full max-w-lg rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold mb-4">Create Your Channel</h2>
+        <h2 className="text-xl font-bold mb-4">
+          {isCreate ? "Create Your Channel" : "Update Your Channel"}
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Channel Name */}
@@ -55,6 +111,7 @@ const CreateChannelModal = ({ isOpen, onClose, onCreate }) => {
               placeholder="Tell viewers about your channel"
               rows={3}
               className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
             />
           </div>
 
@@ -70,6 +127,7 @@ const CreateChannelModal = ({ isOpen, onClose, onCreate }) => {
               onChange={handleChange}
               placeholder="Paste avatar image URL"
               className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
             />
           </div>
 
@@ -85,6 +143,7 @@ const CreateChannelModal = ({ isOpen, onClose, onCreate }) => {
               onChange={handleChange}
               placeholder="Paste banner image URL"
               className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
             />
           </div>
 
@@ -101,13 +160,14 @@ const CreateChannelModal = ({ isOpen, onClose, onCreate }) => {
               type="submit"
               className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700"
             >
-              Create Channel
+              {isCreate ? "Create Channel" : "Update Channel"}
             </button>
           </div>
         </form>
       </div>
+      <Loader isVisible={loading} />
     </div>
   );
 };
 
-export default CreateChannelModal;
+export default ChannelModal;

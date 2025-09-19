@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { videos } from "../../utils/dummyData";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import CreateChannelModal from "./components/CreateChannelModal";
 
 import NoChannel from "./components/NoChannel";
 import UploadVideoModal from "./components/UploadVideoModal";
@@ -9,37 +10,44 @@ import ChannelBanner from "./components/ChannelBanner";
 import ChannelInfo from "./components/ChannelInfo";
 import ChannelTabs from "./components/ChannelTabs";
 import ChannelVideos from "./components/ChannelVideos";
+import { getUserChannelThunk } from "../../store/slices/channelSlice";
 
 const ChannelScreen = () => {
   const { channelId } = useParams();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { userInfo } = useSelector((store) => store?.auth?.loggedIn);
+  const { channel, success } = useSelector((store) => store?.channel);
+  const [userChannelData, setUserChannelData] = useState({});
+
+  const dispatch = useDispatch();
 
   const handleUploadVideo = (videoData) => {
     console.log("Uploaded:", videoData);
   };
 
-  if (!userInfo?.hasChannel) return <NoChannel />;
+  useEffect(() => {
+    if (userInfo?.hasChannel && userInfo?.channel) {
+      dispatch(getUserChannelThunk(userInfo.channel));
+    }
+  }, [userInfo?.hasChannel, userInfo?.channel, dispatch]);
 
-  // Dummy channel data (replace with API/Redux later)
-  const channel = {
-    id: channelId,
-    name: "CodeWithSam",
-    avatar: "https://ui-avatars.com/api/?name=CodeWithSam&background=random",
-    banner:
-      "https://images.unsplash.com/photo-1503264116251-35a269479413?w=1200&h=400&fit=crop",
-    subscribers: 25000,
-    description:
-      "Welcome to CodeWithSam! 🚀 Learn React, Node.js, and full-stack development in a fun and easy way.",
-  };
+  useEffect(() => {
+    if (channel) {
+      setUserChannelData(channel);
+    }
+  }, [channel]);
+
+  if (!userInfo?.hasChannel) return <NoChannel />;
 
   return (
     <div className="w-full">
-      <ChannelBanner banner={channel.banner} />
+      <ChannelBanner banner={userChannelData?.banner} />
 
       <ChannelInfo
-        channel={channel}
+        channel={userChannelData}
         videos={videos}
+        onEditClick={() => setIsModalOpen(true)}
         onUploadClick={() => setIsUploadOpen(true)}
       />
 
@@ -54,6 +62,12 @@ const ChannelScreen = () => {
       <ChannelVideos
         videos={videos}
         onUploadClick={() => setIsUploadOpen(true)}
+      />
+      <CreateChannelModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        isCreate={false}
+        channelData={userChannelData}
       />
     </div>
   );

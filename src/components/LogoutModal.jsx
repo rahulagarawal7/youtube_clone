@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { logoutUserThunk } from "../store/slices/authSlice";
 import { showAlert } from "../store/slices/alertSlice";
+import { closeLoginModal } from "../store/slices/loginModalSlice";
 
 const LogoutModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const LogoutModal = ({ isOpen, onClose }) => {
       );
     }
     onClose();
+    dispatch(closeLoginModal());
   };
 
   return (
