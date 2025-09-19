@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Edit } from "lucide-react";
 
 const ChannelInfo = ({ channel, videos, onUploadClick, onEditClick }) => {
+  const [showDesc, setShowDesc] = useState(false);
+
   return (
     <div className="p-6 flex flex-col md:flex-row md:items-center gap-6">
       {/* Avatar + Edit Button */}
@@ -26,9 +28,18 @@ const ChannelInfo = ({ channel, videos, onUploadClick, onEditClick }) => {
         <p className="text-gray-600">
           {channel?.subscribers?.toLocaleString() || 0} subscribers
         </p>
-        <p className="mt-2 text-gray-700 line-clamp-2">
+
+        <p className={`mt-2 text-gray-700 ${showDesc ? "" : "line-clamp-2"}`}>
           {channel?.description}
         </p>
+        {channel?.description?.length > 100 && ( // show button only if desc is long
+          <button
+            onClick={() => setShowDesc(!showDesc)}
+            className="mt-1 text-blue-500 font-semibold text-sm hover:underline"
+          >
+            {showDesc ? "Show less" : "Show more"}
+          </button>
+        )}
       </div>
 
       {/* Upload Button */}

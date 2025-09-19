@@ -5,7 +5,7 @@ import PageNotFound from "../../pages/PageNotFound";
 import ChannelScreen from "../../pages/channel/ChannelScreen";
 import ProtectedRoute from "./ProtectedRoute";
 import VideoScreen from "../../pages/video/VideoScreen";
-import ChannelList from "../../pages/ChannelList/ChannelList";
+import ChannelList from "../../pages/ChannelList/ChannelListScreen";
 
 const router = createBrowserRouter([
   {

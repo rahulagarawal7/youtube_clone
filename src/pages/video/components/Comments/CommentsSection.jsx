@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CommentItem from "./CommentItem";
 import LoginModal from "../../../../components/LoginModal";
+import PopupModal from "../../../../components/PopupModal";
+
 const CommentsSection = ({ comments, setComments }) => {
   const [sort, setSort] = useState("top");
   const [newComment, setNewComment] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [showAlert,setShowAlert]=useState(false)
+
 
   // ✅ Get logged-in user from Redux
   const { userInfo, isLoggedIn } = useSelector((state) => state.auth.loggedIn);
@@ -16,9 +20,15 @@ const CommentsSection = ({ comments, setComments }) => {
     if (!newComment.trim()) return;
 
     if (!isLoggedIn) {
-      setShowLogin(true);
+      
+      setShowAlert(true);
     }
   };
+
+  const handleOpenLogin=()=>{
+    setShowAlert(false)
+    setShowLogin(true);
+  }
 
   return (
     <div className="mt-8">
@@ -65,7 +75,7 @@ const CommentsSection = ({ comments, setComments }) => {
               className={`px-4 py-2 rounded-md text-white text-sm font-medium transition ${
                 btnLoading
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
+                  : "bg-black hover:bg-gray-900"
               }`}
             >
               {btnLoading ? "Posting..." : "Comment"}
@@ -89,6 +99,15 @@ const CommentsSection = ({ comments, setComments }) => {
         onClose={() => {
           setShowLogin(false);
         }}
+      />
+      <PopupModal 
+      isVisible={showAlert}
+      onClose={()=>setShowAlert(false)}
+      title={"Alert!!"}
+      message={"Please Login to Comment"}
+      onConfirm={handleOpenLogin}
+      confirmText="Login Now"
+      showSecondBtn={true}
       />
     </div>
   );
