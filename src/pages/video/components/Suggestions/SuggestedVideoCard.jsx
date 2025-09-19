@@ -17,7 +17,7 @@ const SuggestedVideoCard = ({ video, formatNumber, formatDate }) => {
 
       {/* Info */}
       <div className="flex-1">
-        <h3 className="text-sm md:text-base font-medium text-gray-900 line-clamp-2 hover:text-blue-600 transition-colors">
+        <h3 className="text-sm md:text-base font-medium text-gray-900 line-clamp-2 hover:text-gray-600 transition-colors">
           {video.title}
         </h3>
         <p className="text-xs md:text-sm text-gray-600">{video.uploader}</p>

@@ -13,6 +13,8 @@ import {
   Newspaper,
   Clapperboard,
   Menu,
+  TvMinimalPlay,
+  icons,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../store/slices/sidebarSlice";
@@ -25,6 +27,7 @@ const Sidebar = () => {
 
   const mainMenu = [
     { icon: <Home className="w-6 h-6" />, label: "Home" },
+    { icon: <TvMinimalPlay className="w-6 h-6" />, label: "All Channels" },
     { icon: <Film className="w-6 h-6" />, label: "Shorts" },
     { icon: <PlaySquare className="w-6 h-6" />, label: "Subscriptions" },
     { icon: <Library className="w-6 h-6" />, label: "Library" },
@@ -68,6 +71,8 @@ const Sidebar = () => {
               onClick={() => {
                 if (item.label === "Home") {
                   navigate("/");
+                } else if (item.label === "All Channels") {
+                  navigate("/channels");
                 }
               }}
               key={idx}
