@@ -11,20 +11,22 @@ import ChannelInfo from "./components/ChannelInfo";
 import ChannelTabs from "./components/ChannelTabs";
 import ChannelVideos from "./components/ChannelVideos";
 import { getUserChannelThunk } from "../../store/slices/channelSlice";
+import { getChannelVideoThunk } from "../../store/slices/videoSlice";
 
 const ChannelScreen = () => {
   const { channelId } = useParams();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userInfo } = useSelector((store) => store?.auth?.loggedIn);
-  const { channel, success } = useSelector((store) => store?.channel);
+  const { channel } = useSelector((store) => store?.channel);
+  const {channelVideo} = useSelector(store=>store.video)
   const [userChannelData, setUserChannelData] = useState({});
 
-  const dispatch = useDispatch();
+console.log('====================================');
+console.log(channelVideo);
+console.log('====================================');
 
-  const handleUploadVideo = (videoData) => {
-    console.log("Uploaded:", videoData);
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (userInfo?.hasChannel && userInfo?.channel) {
@@ -37,6 +39,14 @@ const ChannelScreen = () => {
       setUserChannelData(channel);
     }
   }, [channel]);
+
+
+  // getting all the Channel videos
+  useEffect(()=>{
+    if(channelVideo==null){
+ dispatch(getChannelVideoThunk())
+    }
+  },[channelVideo])
 
   if (!userInfo?.hasChannel) return <NoChannel />;
 
@@ -56,7 +66,6 @@ const ChannelScreen = () => {
       <UploadVideoModal
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
-        onUpload={handleUploadVideo}
       />
 
       <ChannelVideos
