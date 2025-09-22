@@ -1,4 +1,4 @@
-import { AUTHENTICATION, CHANNEL } from "./endpoints";
+import { AUTHENTICATION, CHANNEL, VIDEO } from "./endpoints";
 import axiosInstance from "./NetworkInterceptor";
 
 export const resisterUser = (data) => {
@@ -32,3 +32,17 @@ export const updateChannel = (id, data) => {
 export const getAllChannel = (id) => {
   return axiosInstance.get(CHANNEL.get_all_channel);
 };
+
+export const addVideo=(data)=>{
+  return axiosInstance.post(VIDEO.add_video,data)
+};
+
+export const getAllVideos=()=>{
+  return axiosInstance.get(VIDEO.get_all_video)
+};
+
+export const getChannelVideos=(data)=>{
+  return axiosInstance.get(VIDEO.get_channel_video,data)
+};
+
+

@@ -34,7 +34,7 @@ const VideoScreen = () => {
           date={video.uploadDate}
           likes={video.likes}
           dislikes={video.dislikes}
-          formatNumber={formatNumber}
+          formatNumber={formatNumber}vvvvv
           formatDate={formatDate}
         />
         <ChannelInfo
