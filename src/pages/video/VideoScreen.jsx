@@ -5,10 +5,14 @@ import VideoActions from "./components/VideoActions";
 import ChannelInfo from "./components/ChannelInfo";
 import CommentsSection from "./components/Comments/CommentsSection";
 import SuggestedVideos from "./components/Suggestions/SuggestedVideos";
+import { useParams } from "react-router-dom";
 
 const VideoScreen = () => {
-  const id = "1";
-  const video = videos.find((v) => v.videoId === id) || videos[0];
+  const ids = "1";
+  const { id } = useParams();
+  const video = videos.find((v) => v.videoId === ids) || videos[0];
+
+  console.log("--->",id)
 
   const formatNumber = (num) => {
     if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
@@ -34,7 +38,7 @@ const VideoScreen = () => {
           date={video.uploadDate}
           likes={video.likes}
           dislikes={video.dislikes}
-          formatNumber={formatNumber}vvvvv
+          formatNumber={formatNumber}
           formatDate={formatDate}
         />
         <ChannelInfo

@@ -33,16 +33,22 @@ export const getAllChannel = (id) => {
   return axiosInstance.get(CHANNEL.get_all_channel);
 };
 
-export const addVideo=(data)=>{
-  return axiosInstance.post(VIDEO.add_video,data)
+export const addVideo = (data) => {
+  return axiosInstance.post(VIDEO.add_video, data);
 };
 
-export const getAllVideos=()=>{
-  return axiosInstance.get(VIDEO.get_all_video)
+export const updateVideo = (id, data) => {
+  return axiosInstance.put(`${VIDEO.update_video}/${id}`, data);
 };
 
-export const getChannelVideos=(data)=>{
-  return axiosInstance.get(VIDEO.get_channel_video,data)
+export const getAllVideos = () => {
+  return axiosInstance.get(VIDEO.get_all_video);
 };
 
+export const getChannelVideos = (data) => {
+  return axiosInstance.get(VIDEO.get_channel_video, data);
+};
 
+export const deleteVideo = (id) => {
+  return axiosInstance.delete(`${VIDEO.update_video}/${id}`);
+};

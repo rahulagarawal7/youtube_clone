@@ -14,9 +14,9 @@ export const CHANNEL = {
   get_channel_byID: `${API_URL}channels`,
 };
 
-
-export const VIDEO={
-  add_video:`${API_URL}videos`,
-  get_all_video:`${API_URL}videos`,
-  get_channel_video:`${API_URL}videos/channel`,
-}
+export const VIDEO = {
+  add_video: `${API_URL}videos`,
+  get_all_video: `${API_URL}videos`,
+  get_channel_video: `${API_URL}videos/channel`,
+  update_video: `${API_URL}videos`,
+};

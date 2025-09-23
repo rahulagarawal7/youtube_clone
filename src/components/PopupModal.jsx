@@ -9,6 +9,7 @@ const PopupModal = ({
   onConfirm,
   confirmText = "Confirm",
   showSecondBtn = false,
+  cancelText
 }) => {
   return (
     <AnimatePresence>
@@ -33,7 +34,8 @@ const PopupModal = ({
                 onClick={onClose}
                 className="px-5 py-2 rounded-xl bg-gray-200 text-gray-800 font-medium hover:bg-gray-300 transition"
               >
-                Cancel
+                
+                {cancelText || "Cancel"}
               </button>
 
               {showSecondBtn && (

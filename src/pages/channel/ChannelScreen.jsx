@@ -17,14 +17,13 @@ const ChannelScreen = () => {
   const { channelId } = useParams();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { userInfo } = useSelector((store) => store?.auth?.loggedIn);
   const { channel } = useSelector((store) => store?.channel);
-  const {channelVideo} = useSelector(store=>store.video)
+  const { channelVideo } = useSelector((store) => store.video);
   const [userChannelData, setUserChannelData] = useState({});
 
-console.log('====================================');
-console.log(channelVideo);
-console.log('====================================');
+  if (!userInfo?.hasChannel) return <NoChannel />;
 
   const dispatch = useDispatch();
 
@@ -40,15 +39,12 @@ console.log('====================================');
     }
   }, [channel]);
 
-
   // getting all the Channel videos
-  useEffect(()=>{
-    if(channelVideo==null){
- dispatch(getChannelVideoThunk())
+  useEffect(() => {
+    if (channelVideo == null) {
+      dispatch(getChannelVideoThunk());
     }
-  },[channelVideo])
-
-  if (!userInfo?.hasChannel) return <NoChannel />;
+  }, [channelVideo]);
 
   return (
     <div className="w-full">
@@ -56,7 +52,7 @@ console.log('====================================');
 
       <ChannelInfo
         channel={userChannelData}
-        videos={videos}
+        videos={channelVideo}
         onEditClick={() => setIsModalOpen(true)}
         onUploadClick={() => setIsUploadOpen(true)}
       />
@@ -69,9 +65,10 @@ console.log('====================================');
       />
 
       <ChannelVideos
-        videos={videos}
+        channelVideos={channelVideo}
         onUploadClick={() => setIsUploadOpen(true)}
       />
+
       <CreateChannelModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
