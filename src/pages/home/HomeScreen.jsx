@@ -10,10 +10,8 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    console.log("token-->", token);
 
     if (token === null) {
-      console.log("logout-->", token);
       dispatch(logoutAction());
     }
   }, []);

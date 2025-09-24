@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
     const status = error.response?.status;
     const message =
       error.response?.data?.message ||
-      "Something went wrong. Please try again!";
+      "Something went wrong. Please try again!!";
 
     if (injectedStore) {
       injectedStore.dispatch(

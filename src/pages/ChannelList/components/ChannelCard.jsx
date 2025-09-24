@@ -21,7 +21,9 @@ const ChannelCard = ({ channel, isMyChannel }) => {
       <div className="p-4 flex flex-col flex-1">
         <div className="flex items-center mb-2">
           <img
-            src={channel.avatar || "https://via.placeholder.com/40"}
+            src={channel?.avatar || `https://ui-avatars.com/api/?name=${
+              channel.name || "User"
+            }&background=FF0000&color=fff&size=48`}
             alt={channel.name}
             className="w-10 h-10 rounded-full mr-3 object-cover"
           />

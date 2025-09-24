@@ -146,7 +146,11 @@ const ChannelModal = ({
               required
             />
           </div>
-
+          <span className="text-red-600 text-sm">
+            Note: “Please make sure to enter all details correctly. Adding
+            incorrect or incomplete information may result in your Channel not
+            being updated or displayed properly.”
+          </span>
           {/* Buttons */}
           <div className="flex justify-end gap-3 mt-6">
             <button

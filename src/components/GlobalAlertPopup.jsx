@@ -18,6 +18,7 @@ const GlobalAlertPopup = () => {
       message={current.message}
       title={current.title}
       isVisible={current !== null}
+      cancelText="Okay"
     />
   );
 };

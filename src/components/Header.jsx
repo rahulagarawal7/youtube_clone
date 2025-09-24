@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Menu, Search, Mic, Video, Bell, User, ArrowLeft } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeSidebar, openSidebar } from "../store/slices/sidebarSlice";
 import LogoutModal from "./LogoutModal";
 import { useNavigate } from "react-router-dom";
 import { openLoginModal } from "../store/slices/loginModalSlice";
+import { getAllVideoByQueryThunk, getAllVideoThunk } from "../store/slices/videoSlice";
+import { debounce } from "../utils/helperFunctions";
 
 const Header = ({}) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -17,6 +19,28 @@ const Header = ({}) => {
   );
 
   const dispatch = useDispatch();
+
+  // Create a stable debounced search function
+  const debouncedSearch = useCallback(
+    debounce((query) => {
+      if (query.trim() === "") {
+        dispatch(getAllVideoThunk());
+      } else {
+        dispatch(getAllVideoByQueryThunk(query));
+      }
+    }, 500),
+    [dispatch]
+  );
+
+  // Handle search query changes
+  useEffect(() => {
+    debouncedSearch(searchQuery);
+    
+    // Cleanup function to cancel any pending debounced calls on unmount
+    return () => {
+      debouncedSearch.cancel && debouncedSearch.cancel();
+    };
+  }, [searchQuery, debouncedSearch]);
 
   const handleLogin = () => {
     dispatch(openLoginModal());
@@ -43,6 +67,7 @@ const Header = ({}) => {
     setShowDropdown(false);
   };
 
+  // Rest of your component remains exactly the same...
   return (
     <header className="flex items-center justify-between px-3 sm:px-4 py-2 bg-white shadow-sm sticky top-0 z-50">
       {/* Mobile Search Overlay */}

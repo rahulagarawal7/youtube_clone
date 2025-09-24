@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import VideoCard from "../../../components/VideoCard";
-import { videos } from "../../../utils/dummyData";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getAllVideoThunk } from "../../../store/slices/videoSlice";
+import HomeShimmer from "../../../components/Shimmer/HomeShimmer";
+import NoData from "../components/NoData";
 
 const Body = () => {
-  const isOpen = useSelector((store) => store?.sidebar?.isOpen);
+  const isOpen = useSelector((store) => store.sidebar.isOpen);
+  const { AllVideos, loading } = useSelector((store) => store.video);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleVideoClick = (videoId) => {
-    navigate(`/video/${videoId}`); // navigate to video detail page
+    navigate(`/video/${videoId}`);
   };
+
+  // Fetch videos on mount
+  useEffect(() => {
+    dispatch(getAllVideoThunk());
+  }, [dispatch]);
+
+  if (loading) return <HomeShimmer />;
+
+  if (!AllVideos || AllVideos.length === 0) return <NoData />;
 
   return (
     <div className="p-4 sm:p-6 w-full">
@@ -22,16 +35,16 @@ const Body = () => {
           sm:grid-cols-2 
           md:grid-cols-2 
           lg:grid-cols-3 
-          ${isOpen ? "xl:grid-cols-3 " : "xl:grid-cols-4 "}
+          ${isOpen ? "xl:grid-cols-3" : "xl:grid-cols-4"}
         `}
       >
-        {videos.map((item) => (
+        {AllVideos.map((item) => (
           <div
-            key={item.videoId}
-            onClick={() => handleVideoClick(item.videoId)}
+            key={item._id}
+            onClick={() => handleVideoClick(item._id)}
             className="transform hover:scale-105 transition-transform duration-200 ease-in-out"
           >
-            <VideoCard video={item} />
+            <VideoCard video={item} showEdit={false} />
           </div>
         ))}
       </div>

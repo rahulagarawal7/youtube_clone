@@ -15,19 +15,18 @@ import { getChannelVideoThunk } from "../../store/slices/videoSlice";
 
 const ChannelScreen = () => {
   const { channelId } = useParams();
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { userInfo } = useSelector((store) => store?.auth?.loggedIn);
-  const { channel } = useSelector((store) => store?.channel);
-  const {channelVideo} = useSelector(store=>store.video)
-  const [userChannelData, setUserChannelData] = useState({});
-
-console.log('====================================');
-console.log(channelVideo);
-console.log('====================================');
-
   const dispatch = useDispatch();
 
+  // hooks at the top
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userChannelData, setUserChannelData] = useState({});
+
+  const { userInfo } = useSelector((store) => store?.auth?.loggedIn);
+  const { channel } = useSelector((store) => store?.channel);
+  const { channelVideo } = useSelector((store) => store.video);
+
+  // fetch channel info
   useEffect(() => {
     if (userInfo?.hasChannel && userInfo?.channel) {
       dispatch(getUserChannelThunk(userInfo.channel));
@@ -40,15 +39,16 @@ console.log('====================================');
     }
   }, [channel]);
 
-
-  // getting all the Channel videos
-  useEffect(()=>{
-    if(channelVideo==null){
- dispatch(getChannelVideoThunk())
+  useEffect(() => {
+    if (channelVideo == null) {
+      dispatch(getChannelVideoThunk());
     }
-  },[channelVideo])
+  }, [channelVideo, dispatch]);
 
-  if (!userInfo?.hasChannel) return <NoChannel />;
+  // conditional rendering happens here, after all hooks
+  if (!userInfo?.hasChannel) {
+    return <NoChannel />;
+  }
 
   return (
     <div className="w-full">
@@ -56,7 +56,7 @@ console.log('====================================');
 
       <ChannelInfo
         channel={userChannelData}
-        videos={videos}
+        videos={channelVideo}
         onEditClick={() => setIsModalOpen(true)}
         onUploadClick={() => setIsUploadOpen(true)}
       />
@@ -69,9 +69,10 @@ console.log('====================================');
       />
 
       <ChannelVideos
-        videos={videos}
+        channelVideos={channelVideo}
         onUploadClick={() => setIsUploadOpen(true)}
       />
+
       <CreateChannelModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

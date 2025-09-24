@@ -14,53 +14,46 @@ const VideoActions = ({
   const dislikeRef = useRef(null);
 
   useEffect(() => {
-    if (likeRef.current) likeRef.current.stop();
-    if (dislikeRef.current) dislikeRef.current.stop();
-  }, []);
-
-  useEffect(() => {
     likeRef.current.goToAndPlay(0, true);
     dislikeRef.current.goToAndPlay(0, true);
   }, []);
 
   const handleLike = () => {
-    if (likeRef.current) {
-      likeRef.current.goToAndPlay(0, true); // restart animation
-    }
+    if (likeRef.current) likeRef.current.goToAndPlay(0, true);
   };
 
   const handleDislike = () => {
-    if (dislikeRef.current) {
-      dislikeRef.current.goToAndPlay(0, true); // restart animation
-    }
+    if (dislikeRef.current) dislikeRef.current.goToAndPlay(0, true);
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
       {/* Views + Date */}
-      <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 flex-wrap">
+      <div className="flex items-center gap-2 text-sm sm:text-base text-gray-600 flex-wrap">
         <span>{formatNumber(views)} views</span>
         <span className="hidden sm:inline">•</span>
         <span>{formatDate(date)}</span>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+      <div className="flex items-center gap-3 flex-wrap">
         {/* Like / Dislike */}
-        <div className="flex items-center rounded-full overflow-hidden border border-gray-200">
+        <div className="flex items-center rounded-full border border-gray-200 overflow-hidden">
           {/* Like */}
           <button
             onClick={handleLike}
-            className="flex items-center justify-center gap-2 w-24 sm:w-28 h-10 sm:h-12 hover:bg-gray-100 transition-colors"
+            className="flex items-center justify-center gap-2 px-3 sm:px-4 h-10 sm:h-12 hover:bg-gray-100 transition-colors"
           >
             <Lottie
               lottieRef={likeRef}
               animationData={animationData}
               loop={false}
               autoplay={false}
-              className="w-8 h-8 sm:w-10 sm:h-10"
+              className="w-8 h-8 sm:w-8 sm:h-8"
             />
-            <span className="text-xs sm:text-sm">{formatNumber(likes)}</span>
+            <span className="text-sm sm:text-base font-medium">
+              {formatNumber(likes)}
+            </span>
           </button>
 
           <div className="w-px h-6 bg-gray-300"></div>
@@ -68,24 +61,26 @@ const VideoActions = ({
           {/* Dislike */}
           <button
             onClick={handleDislike}
-            className="flex items-center justify-center gap-2 w-24 sm:w-28 h-10 sm:h-12 hover:bg-gray-100 transition-colors"
+            className="flex items-center justify-center gap-2 px-2 sm:px-4 h-10 sm:h-12 hover:bg-gray-100 transition-colors"
           >
             <Lottie
               lottieRef={dislikeRef}
               animationData={animationData}
               loop={false}
               autoplay={false}
-              className="w-8 h-8 sm:w-10 sm:h-10 rotate-180"
+              className="w-8 h-8 sm:w-8 sm:h-8 rotate-180"
             />
-            <span className="text-xs sm:text-sm">{formatNumber(dislikes)}</span>
+            <span className="text-sm sm:text-base font-medium">
+              {formatNumber(dislikes)}
+            </span>
           </button>
         </div>
 
         {/* Share & Save */}
-        <button className="w-24 sm:w-28 h-10 sm:h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-xs sm:text-sm transition-colors">
+        <button className="px-4 sm:px-6 h-10 sm:h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-sm sm:text-base font-medium transition-colors">
           Share
         </button>
-        <button className="w-24 sm:w-28 h-10 sm:h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-xs sm:text-sm transition-colors">
+        <button className="px-4 sm:px-6 h-10 sm:h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-sm sm:text-base font-medium transition-colors">
           Save
         </button>
       </div>

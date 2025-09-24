@@ -1,47 +1,73 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { dummyComments, videos } from "../../utils/dummyData";
 import VideoPlayer from "./components/VideoPlayer";
 import VideoActions from "./components/VideoActions";
 import ChannelInfo from "./components/ChannelInfo";
 import CommentsSection from "./components/Comments/CommentsSection";
 import SuggestedVideos from "./components/Suggestions/SuggestedVideos";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  formatNumber,
+  formatDate,
+  generateRandomViews,
+} from "../../utils/helperFunctions";
+import { useDispatch, useSelector } from "react-redux";
+import { getVideoByIdThunk } from "../../store/slices/videoSlice";
+import Loader from "../../components/Loader";
+import PopupModal from "../../components/PopupModal";
 
 const VideoScreen = () => {
-  const id = "1";
-  const video = videos.find((v) => v.videoId === id) || videos[0];
+  const { id } = useParams();
+  const navigation = useNavigate();
+  const { videoDetails, errorVideoDetails, loading, isSubscribed } =
+    useSelector((store) => store?.video);
 
-  const formatNumber = (num) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-    return num.toString();
-  };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    });
-  };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (id) dispatch(getVideoByIdThunk(id));
+  }, []);
 
+  if (loading) return <Loader isVisible={true} />;
+  if (errorVideoDetails)
+    return (
+      <PopupModal
+        isVisible={true}
+        cancelText={"Okay"}
+        title={"Alert!"}
+        message={"Something went Wrong please try after some Time"}
+        onClose={() => navigation("/")}
+      />
+    );
   return (
     <div className="mx-auto px-4 py-6 flex flex-col xl:flex-row gap-6">
       <div className="flex-1 max-w-4xl">
-        <VideoPlayer thumbnailUrl={video.thumbnailUrl} title={video.title} />
-        <h1 className="text-xl md:text-2xl font-bold mb-2">{video.title}</h1>
+        <VideoPlayer
+          thumbnailUrl={videoDetails?.thumbnailUrl}
+          title={videoDetails?.title}
+          videoId={videoDetails?.videoID}
+        />
+        <h1 className="text-xl md:text-2xl font-bold mb-2">
+          {videoDetails?.title}
+        </h1>
         <VideoActions
-          views={video.views}
-          date={video.uploadDate}
-          likes={video.likes}
-          dislikes={video.dislikes}
-          formatNumber={formatNumber}vvvvv
+          views={generateRandomViews()}
+          date={videoDetails?.updatedAt}
+          likes={videoDetails?.likes?.length}
+          dislikes={videoDetails?.dislikes?.length}
+          formatNumber={formatNumber}
           formatDate={formatDate}
         />
         <ChannelInfo
-          uploader={video.uploader}
-          description={video.description}
+          uploader={videoDetails?.channel?.name}
+          id={videoDetails?.channel?._id}
+          description={videoDetails?.description}
+          avatar={videoDetails?.channel?.avatar}
+          subscribers={videoDetails?.channel?.subscribers}
+          isSubscribed={isSubscribed}
+          videoID={id}
         />
-        <CommentsSection comments={dummyComments} />
+        <CommentsSection videoId={id} comments={dummyComments} />
       </div>
 
       {/* Sidebar */}
