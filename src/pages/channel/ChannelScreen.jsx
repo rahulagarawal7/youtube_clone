@@ -15,18 +15,18 @@ import { getChannelVideoThunk } from "../../store/slices/videoSlice";
 
 const ChannelScreen = () => {
   const { channelId } = useParams();
+  const dispatch = useDispatch();
+
+  // hooks at the top
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userChannelData, setUserChannelData] = useState({});
 
   const { userInfo } = useSelector((store) => store?.auth?.loggedIn);
   const { channel } = useSelector((store) => store?.channel);
   const { channelVideo } = useSelector((store) => store.video);
-  const [userChannelData, setUserChannelData] = useState({});
 
-  if (!userInfo?.hasChannel) return <NoChannel />;
-
-  const dispatch = useDispatch();
-
+  // fetch channel info
   useEffect(() => {
     if (userInfo?.hasChannel && userInfo?.channel) {
       dispatch(getUserChannelThunk(userInfo.channel));
@@ -39,12 +39,16 @@ const ChannelScreen = () => {
     }
   }, [channel]);
 
-  // getting all the Channel videos
   useEffect(() => {
     if (channelVideo == null) {
       dispatch(getChannelVideoThunk());
     }
-  }, [channelVideo]);
+  }, [channelVideo, dispatch]);
+
+  // conditional rendering happens here, after all hooks
+  if (!userInfo?.hasChannel) {
+    return <NoChannel />;
+  }
 
   return (
     <div className="w-full">

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Trash, Edit } from "lucide-react";
 import ActionIcon from "./ActionIcon";
 import { generateRandomViews } from "../utils/helperFunctions";
-import Profile from '../assets/images/profile.png'
+import Profile from "../assets/images/profile.png";
 
 const VideoCard = ({ video, showEdit = false, setIsUpdate, handleDelete }) => {
   const [avatarLoading, setAvatarLoading] = useState(true);
@@ -26,10 +26,10 @@ const VideoCard = ({ video, showEdit = false, setIsUpdate, handleDelete }) => {
         {/* Channel avatar */}
         <div className="relative w-9 h-9 flex-shrink-0">
           {avatarLoading && (
-            <div className="w-9 h-9 rounded-full bg-red-200 animate-pulse absolute inset-0" >
+            <div className="w-9 h-9 rounded-full bg-red-200 animate-pulse absolute inset-0">
               <img
-               src={Profile}
-               className={`w-9 h-9 rounded-full object-cover`}
+                src={Profile}
+                className={`w-9 h-9 rounded-full object-cover`}
               />
             </div>
           )}

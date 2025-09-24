@@ -4,6 +4,7 @@ import {
   getChannelById,
   updateChannel,
   getAllChannel,
+  toggleSubscription,
 } from "../../services/api";
 
 // Async thunk for creating a channel
@@ -51,6 +52,21 @@ export const getAllChannelThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await getAllChannel();
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Async thunk for get all channel
+export const toggleSubscriptionThunk = createAsyncThunk(
+  "channel/toggleSubscribe",
+  async (id, { rejectWithValue }) => {
+    try {
+      console.log("00", id);
+      const response = await toggleSubscription(id);
+
       return response;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -141,6 +157,21 @@ const channelSlice = createSlice({
       .addCase(getAllChannelThunk.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
+      });
+    //   toggleSubscriptionThunk cases
+    builder
+      .addCase(toggleSubscriptionThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(toggleSubscriptionThunk.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        console.log("payload - ful ", payload);
+      })
+      .addCase(toggleSubscriptionThunk.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+        console.log("payload - rej ", payload);
       });
   },
 });

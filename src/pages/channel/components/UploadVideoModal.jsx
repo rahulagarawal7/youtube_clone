@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addVideoThunk,
+  getChannelVideoThunk,
   updateVideoThunk,
 } from "../../../store/slices/videoSlice";
 import { showAlert } from "../../../store/slices/alertSlice";
@@ -71,6 +72,7 @@ const UploadVideoModal = ({ isOpen, onClose, update = false, data = {} }) => {
       }
 
       if (res.success) {
+        dispatch(getChannelVideoThunk());
         dispatch(
           showAlert({
             message: res.message,

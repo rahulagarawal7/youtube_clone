@@ -2,10 +2,14 @@ import React, { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import FilterButton from "../../../components/FilterButton";
 import { filterButtons } from "../../../utils/dummyData";
+import { useDispatch } from "react-redux";
+import { getAllVideoByCategoryThunk } from "../../../store/slices/videoSlice";
 
 const FilterBtnSection = () => {
   const [active, setActive] = useState(1);
   const scrollRef = useRef(null);
+
+  const dispatch= useDispatch()
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -15,6 +19,14 @@ const FilterBtnSection = () => {
       });
     }
   };
+
+ const  handleFilterButton=(item)=>{
+      setActive(item.id);
+      
+dispatch(getAllVideoByCategoryThunk(item.label));
+
+
+  }
 
   return (
     <div className="relative flex items-center mt-4">
@@ -36,7 +48,7 @@ const FilterBtnSection = () => {
             key={item.id}
             name={item.label}
             active={active === item.id}
-            onClick={() => setActive(item.id)}
+            onClick={() => handleFilterButton(item)}
           />
         ))}
       </div>

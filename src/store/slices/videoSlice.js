@@ -5,6 +5,9 @@ import {
   getChannelVideos,
   updateVideo,
   deleteVideo,
+  getVideoById,
+  getAllVideoByCategory,
+  getAllVideoByQuery
 } from "../../services/api";
 
 export const addVideoThunk = createAsyncThunk(
@@ -43,6 +46,18 @@ export const deleteVideoThunk = createAsyncThunk(
   }
 );
 
+export const getVideoByIdThunk = createAsyncThunk(
+  "video/getById",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await getVideoById(id);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 export const getAllVideoThunk = createAsyncThunk(
   "video/getAll",
   async (_, { rejectWithValue }) => {
@@ -54,6 +69,31 @@ export const getAllVideoThunk = createAsyncThunk(
     }
   }
 );
+
+export const getAllVideoByCategoryThunk = createAsyncThunk(
+  "video/Category",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await getAllVideoByCategory(data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const getAllVideoByQueryThunk = createAsyncThunk(
+  "video/query",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await getAllVideoByQuery(data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 
 export const getChannelVideoThunk = createAsyncThunk(
   "video/getChannel",
@@ -73,6 +113,9 @@ const videosSlice = createSlice({
     loading: false,
     AllVideos: null,
     channelVideo: null,
+    videoDetails: null,
+    errorVideoDetails: false,
+    isSubscribed: false,
   },
   extraReducers: (builder) => {
     builder
@@ -130,6 +173,44 @@ const videosSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteVideoThunk.rejected, (state, { payload }) => {
+        state.loading = false;
+      });
+    builder
+      // get  Video  by ID Thunk cases
+      .addCase(getVideoByIdThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getVideoByIdThunk.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.videoDetails = payload.video;
+        state.isSubscribed = payload.isSubscribed;
+      })
+      .addCase(getVideoByIdThunk.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.errorVideoDetails = true;
+      });
+      builder
+      // get  Video  by category Thunk cases
+      .addCase(getAllVideoByCategoryThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllVideoByCategoryThunk.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.AllVideos = payload.videos;
+      })
+      .addCase(getAllVideoByCategoryThunk.rejected, (state, { payload }) => {
+        state.loading = false;
+      });
+       builder
+      // get  Video  by Query Thunk cases
+      .addCase(getAllVideoByQueryThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllVideoByQueryThunk.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.AllVideos = payload.videos;
+      })
+      .addCase(getAllVideoByQueryThunk.rejected, (state, { payload }) => {
         state.loading = false;
       });
   },

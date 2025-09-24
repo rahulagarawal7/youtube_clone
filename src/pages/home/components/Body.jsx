@@ -10,13 +10,10 @@ const Body = () => {
   const isOpen = useSelector((store) => store.sidebar.isOpen);
   const { AllVideos, loading } = useSelector((store) => store.video);
 
-  console.log("000->",AllVideos)
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleVideoClick = (videoId) => {
-    alert(videoId)
     navigate(`/video/${videoId}`);
   };
 
