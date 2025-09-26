@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HomeShimmer from "../../components/Shimmer/HomeShimmer";
 import FilterBtnSection from "./components/FilterBtnSection";
 import Body from "./components/Body";
@@ -7,8 +7,9 @@ import { logoutAction } from "../../store/slices/authSlice";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+ 
 
-  useEffect(() => {
+    useEffect(() => {
     const token = localStorage.getItem("authToken");
 
     if (token === null) {

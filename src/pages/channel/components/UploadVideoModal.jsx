@@ -8,6 +8,7 @@ import {
 import { showAlert } from "../../../store/slices/alertSlice";
 import Loader from "../../../components/Loader";
 import { filterButtons } from "../../../utils/dummyData";
+import {useGenerateText} from "../../../hooks/useGenerateText";
 
 const UploadVideoModal = ({ isOpen, onClose, update = false, data = {} }) => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,8 @@ const UploadVideoModal = ({ isOpen, onClose, update = false, data = {} }) => {
 
   const dispatch = useDispatch();
   const { loading } = useSelector((store) => store.video);
+  const { getRandomVideo ,loadingInfo} = useGenerateText();
+
 
   // Pre-fill form when modal opens in update mode
   useEffect(() => {
@@ -99,6 +102,7 @@ const UploadVideoModal = ({ isOpen, onClose, update = false, data = {} }) => {
     }
   };
 
+    
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white w-full max-w-lg rounded-xl shadow-lg p-6">
@@ -202,6 +206,14 @@ const UploadVideoModal = ({ isOpen, onClose, update = false, data = {} }) => {
           <div className="flex justify-end gap-3 mt-6">
             <button
               type="button"
+              onClick={() => setFormData(getRandomVideo())}
+              className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700"
+              disabled={loading}
+            >
+              Fill Random Data
+            </button>
+            <button
+              type="button"
               onClick={onClose}
               className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100"
               disabled={loading}
@@ -224,7 +236,7 @@ const UploadVideoModal = ({ isOpen, onClose, update = false, data = {} }) => {
           </div>
         </form>
       </div>
-      <Loader isVisible={loading} />
+      <Loader isVisible={loading || loadingInfo} />
     </div>
   );
 };

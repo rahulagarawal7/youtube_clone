@@ -25,7 +25,7 @@ const NoData = () => {
 
         {/* Description */}
         <p className="text-gray-500 mb-4 max-w-xs">
-          This channel doesn’t have any videos yet. Try creating your channel
+          This Category doesn’t have any videos yet. Try creating your channel
           and adding videos to get started!
         </p>
 

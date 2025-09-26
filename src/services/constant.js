@@ -3,4 +3,6 @@ const JWT_SECRET = import.meta.env.VITE_JWT_SECRET;
 
 const REQUEST_TIMEOUT = 10000;
 
-export { API_URL, JWT_SECRET, REQUEST_TIMEOUT };
+const YOUTUBE_URL="https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&maxResults=20&regionCode=IN&key="
+
+export { API_URL, JWT_SECRET, REQUEST_TIMEOUT,YOUTUBE_URL };

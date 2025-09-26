@@ -1,6 +1,7 @@
 import React from "react";
 
 const VideoPlayer = ({ videoId = "j6HGO9OMTvY", title = "YouTube Video" }) => {
+  
   return (
     <div className="relative w-full bg-black rounded-xl overflow-hidden mb-4">
       <div className="aspect-video relative">
