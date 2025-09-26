@@ -7,6 +7,7 @@ import {
 import Loader from "../../../components/Loader";
 import { getUserThunk } from "../../../store/slices/authSlice";
 import { showAlert } from "../../../store/slices/alertSlice";
+import {useGenerateChannel} from "../../../hooks/useGenerateChannel";
 
 const ChannelModal = ({
   isOpen,
@@ -20,6 +21,7 @@ const ChannelModal = ({
     avatar: "",
     banner: "",
   });
+  const { getRandomChannel} = useGenerateChannel();
 
   const dispatch = useDispatch();
   const { loading } = useSelector((store) => store.channel);
@@ -153,6 +155,14 @@ const ChannelModal = ({
           </span>
           {/* Buttons */}
           <div className="flex justify-end gap-3 mt-6">
+               <button
+              type="button"
+              onClick={() => setFormData(getRandomChannel())}
+              className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700"
+              disabled={loading}
+            >
+              Fill Random Data
+            </button>
             <button
               type="button"
               onClick={onClose}
