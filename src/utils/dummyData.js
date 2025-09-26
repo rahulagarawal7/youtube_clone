@@ -229,64 +229,10 @@ export const videos = [
   },
 ];
 
-export const dummyComments = [
-  {
-    id: 1,
-    author: "TechEnthusiast",
-    avatar:
-      "https://ui-avatars.com/api/?name=TechEnthusiast&background=FF6B6B&color=fff",
-    content:
-      "This is absolutely incredible! The quality is amazing and the explanation is so clear.",
-    timestamp: "2 hours ago",
-    likes: 125,
-  },
-  {
-    id: 2,
-    author: "NatureLover92",
-    avatar:
-      "https://ui-avatars.com/api/?name=NatureLover92&background=4ECDC4&color=fff",
-    content:
-      "I've been waiting for a video like this for so long. Thank you for sharing!",
-    timestamp: "5 hours ago",
-    likes: 89,
-  },
-  {
-    id: 3,
-    author: "CreativeDesigner",
-    avatar:
-      "https://ui-avatars.com/api/?name=CreativeDesigner&background=45B7D1&color=fff",
-    content:
-      "The production value is through the roof! How long did this take to make?",
-    timestamp: "1 day ago",
-    likes: 67,
-  },
-  {
-    id: 4,
-    author: "RandomViewer",
-    avatar:
-      "https://ui-avatars.com/api/?name=RandomViewer&background=96CEB4&color=fff",
-    content: "Great content as always! Keep up the excellent work.",
-    timestamp: "1 day ago",
-    likes: 45,
-  },
-  {
-    id: 5,
-    author: "StudentLearner",
-    avatar:
-      "https://ui-avatars.com/api/?name=StudentLearner&background=FFEAA7&color=333",
-    content:
-      "This helped me understand the concept so much better. Subscribed!",
-    timestamp: "2 days ago",
-    likes: 78,
-  },
-  {
-    id: 6,
-    author: "ExpertCritic",
-    avatar:
-      "https://ui-avatars.com/api/?name=ExpertCritic&background=DDA0DD&color=fff",
-    content:
-      "While the content is good, I think there could be more detail in the second half.",
-    timestamp: "3 days ago",
-    likes: 23,
-  },
-];
+ export  const defaultVideo = {
+    title: "Default Video Title",
+    description: "This is a default description in case the API fails or returns no data.",
+    thumbnailUrl: "https://via.placeholder.com/400x300",
+    videoID: "j6HGO9OMTvY",
+    category: "Live",
+  };

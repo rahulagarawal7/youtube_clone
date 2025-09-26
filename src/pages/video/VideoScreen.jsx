@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { dummyComments, videos } from "../../utils/dummyData";
+import {  videos } from "../../utils/dummyData";
 import VideoPlayer from "./components/VideoPlayer";
 import VideoActions from "./components/VideoActions";
 import ChannelInfo from "./components/ChannelInfo";
@@ -21,7 +21,6 @@ const VideoScreen = () => {
   const navigation = useNavigate();
   const { videoDetails, errorVideoDetails, loading, isSubscribed } =
     useSelector((store) => store?.video);
-
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -67,7 +66,7 @@ const VideoScreen = () => {
           isSubscribed={isSubscribed}
           videoID={id}
         />
-        <CommentsSection videoId={id} comments={dummyComments} />
+        <CommentsSection videoId={id} />
       </div>
 
       {/* Sidebar */}

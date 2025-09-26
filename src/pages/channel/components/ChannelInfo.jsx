@@ -30,7 +30,7 @@ const ChannelInfo = ({ channel, videos, onUploadClick, onEditClick }) => {
           
           <h1 className="text-2xl font-bold">{channel?.name}</h1>
         <p className="text-gray-600">
-          {channel?.subscribers?.toLocaleString() || 0} subscribers
+          {channel?.subscribers?.length || 0} subscribers
         </p>
           </div>
                 
