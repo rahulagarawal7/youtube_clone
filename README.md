@@ -83,7 +83,7 @@ Follow these steps to get the YouTube Clone frontend running locally:
 
 1️⃣ Clone the repository
 bash
-git clone https://github.com/your-username/youtube_clone.git
+git clone https://github.com/rahulagarawal7/youtube_clone
 cd youtube_clone
 2️⃣ Install dependencies
 Make sure you have Node.js >= 18 and npm installed. Then run:
