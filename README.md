@@ -102,10 +102,31 @@ VITE_API_URL=http://localhost:3000/api/
 # Secret key 
 VITE_JWT_SECRET=your_secret_key_here
 4️⃣ Start the development server
-bash
-npm run dev
-Open your browser at:
+🔹 Development
 
+Runs with .env.development
+
+npm run dev
+
+
+Your app will be available at:
+👉 http://localhost:5173 (default Vite port)
+
+🔹 Production Build
+
+Generates an optimized build using .env.production
+
+npm run build
+
+🔹 Preview Production Build
+
+Serve the production build locally (uses .env.production)
+
+npm run preview
+
+
+Your app will be available at:
+👉 http://localhost:4173 (default Vite preview port)
 text
 http://localhost:5173
 The app will automatically reload when you make changes to the code.
