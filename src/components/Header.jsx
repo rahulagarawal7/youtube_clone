@@ -19,7 +19,7 @@ const Header = ({}) => {
   );
 
   const dispatch = useDispatch();
-
+ console.log("user--",userInfo)
   // Create a stable debounced search function
   const debouncedSearch = useCallback(
     debounce((query) => {
@@ -154,6 +154,7 @@ const Header = ({}) => {
         </button>
 
         {/* Desktop Action Buttons */}
+     
         <div className="hidden lg:flex items-center gap-2">
           <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
             <Video className="w-5 h-5" />
@@ -163,6 +164,7 @@ const Header = ({}) => {
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full"></span>
           </button>
         </div>
+
 
         {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-2">
@@ -174,9 +176,12 @@ const Header = ({}) => {
               >
                 <span className="lg:inline">Sign in</span>
               </button>
-              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border border-gray-200">
-                <User className="w-4 h-4 rounded-2xl" />
-              </div>
+
+  <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border border-gray-200">
+    <User className="w-4 h-4 rounded-2xl" />
+  </div>
+
+
             </div>
           ) : (
             <div className="flex items-center gap-2">
@@ -208,7 +213,13 @@ const Header = ({}) => {
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border border-gray-200"
                 onClick={() => setShowDropdown((prev) => !prev)}
               >
-                <User className="w-4 h-4 text-gray-600" />
+                <div className="flex items-center justify-center">
+    <img
+      src={`https://ui-avatars.com/api/?name=${userInfo?.fullName}&background=FF0000&color=fff&size=24`}
+      alt={userInfo?.fullName}
+      className="w-8 h-8 rounded-full object-cover"
+    />
+  </div>
               </div>
             </div>
           )}
@@ -234,16 +245,9 @@ const Header = ({}) => {
               {/* Dropdown Menu */}
               <div className="absolute right-0 top-10 shadow-lg rounded-md w-48 py-1 bg-white border border-gray-200 z-50">
                 {/* Action Buttons (Mobile Only) */}
+              
                 <div className="border-b border-gray-100 pb-1 mb-1">
-                  <button className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
-                    <Video className="w-4 h-4" />
-                    Create
-                  </button>
-                  <button className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm hover:bg-gray-100 relative">
-                    <Bell className="w-4 h-4" />
-                    Notifications
-                    <span className="absolute left-7 top-2 w-2 h-2 bg-red-600 rounded-full"></span>
-                  </button>
+                    {isLoggedIn && userInfo.email && <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 border-t border-gray-100">{userInfo.email}</div>}
                 </div>
 
                 {/* Auth Options */}
