@@ -146,3 +146,8 @@ This generates a **production-ready build** in the `dist/` folder.
 - **Shimmer effects** are used for loading skeletons.
 - **Global Alert Popup** provides centralized notifications (success, error, info).
 - Page Not Found (404) handling is included for unmatched routes.
+
+### Add .env file in root folder in your Project
+VITE_API_URL=URL
+VITE_JWT_SECRET=KAY
+VITE_API_YOU_TUBE_KEY=Youtube_key
